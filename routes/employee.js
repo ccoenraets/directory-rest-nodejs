@@ -41,7 +41,7 @@ exports.findAll = function(req, res) {
     var name = req.query["name"];
     db.collection('employees', function(err, collection) {
         if (name) {
-            collection.find({"fullName": new RegExp(name)}).toArray(function(err, items) {
+            collection.find({"fullName": new RegExp(name, "i")}).toArray(function(err, items) {
                 res.jsonp(items);
             });
         } else {
