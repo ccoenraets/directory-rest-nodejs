@@ -1,25 +1,18 @@
-var mongo = require('mongodb');
- 
-var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
- 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('employeedb08', server);
- 
-db.open(function(err, db) {
-    if(!err) {
-        console.log("Connected to 'employeedb' database");
-        db.collection('employees', {strict:true}, function(err, collection) {
-            if (err) {
-                console.log("The 'employees' collection doesn't exist. Creating it with sample data...");
-                populateDB();
-            }
-        });
-    } else {
-        console.log(err);
-    }
+var MongoClient = require('mongodb').MongoClient,
+    Server = require('mongodb').Server,
+    db;
+
+var mongoClient = new MongoClient(new Server('localhost', 27017));
+mongoClient.open(function(err, mongoClient) {
+    db = mongoClient.db("employeedb09");
+    db.collection('employees', {strict:true}, function(err, collection) {
+        if (err) {
+            console.log("The 'employees' collection doesn't exist. Creating it with sample data...");
+            populateDB();
+        }
+    });
 });
+
  
 exports.findById = function(req, res) {
     console.log(req.params);
